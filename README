@@ -1,0 +1,9 @@
+This is MATLAB code for an Agent Based Model used to simulate an infection.
+
+We take GPS location data for u users over t times. Each user may or may not be infected and spreads the infection as a (probabilistic) function of how close they are to someone else.
+
+From the testing data, we partition the area covered by all users (essentially the Purdue campus) into k clusters. Then, for each cluster, we determine how likely someone is to move to another cluster (modeling movement) and interact within a cluster (modeling behavior).
+
+Using this information, we simulate an infection and compare the number of people infected at any time to the observed training data.
+
+The parameter optimized is simply the number of clusters, as all other variables are a function of the number of clusters.
