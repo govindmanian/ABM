@@ -1,0 +1,53 @@
+This function handles the big picture
+% Training set data runs through the analysis
+% Analysis results are passed to simulation
+% Simulation passes back the history for this particular cluster
+% RMSR is calculated and saved
+
+load timepointlocations
+
+%%TODO THIS IS ALL WRITTEN AS SCAFFOLDING. IT IS NOT EXACT
+%%THE NUMBER OF CLUSTERS TO BE USED WILL BE DETERMINED A PRIORI BY USING HULLVIZ AND
+%%MAKING SOME ASSUMPTIONS ABOUT HOW MANY THERE SHOULD BE. THEN WE CHECK TO
+%%SEE WHAT HAPPENS IF WE USE MORE OR LESS
+
+%%AN AREA FOR EXPASION IS TO USE SOMETHING LIKE HIERARCHICAL CLUSTERING AND
+%%GO NUTS WITH CHECKING WHICH IS THE BEST. MAY NOT WORK -- O(n^3)?
+%%For now, this just uses one (geographic) combination of clusters for each
+%%number of clusters
+
+guess = 20;
+uncertainty = 5;
+
+lowerbdd = guess - uncertainty;
+upperbdd = guess + uncertainty;
+
+% simultlength = ;
+% infectduration = ;
+
+for numclusters = lowerbdd:upperbdd
+    
+    %CALL ANALYSIS
+    %pass training data and number of clusters
+    %return interprob, transprob, start locations
+    %TODO are the starting infected people a bdy condition? Probably not,
+    %there is a way to set its
+    
+    [interprob, fakecdf, init] = analysis(DATA, numclusters, rcrit);
+    
+    %CALL SIMULATION
+    %pass interprob, fakecdf, start locations, numusers (which you can get
+    %from start locations
+    %return history -- num infections over time
+    
+    [?] = simulation(interprob, fakecdf, init)
+    
+    %CALL ERROR FUNCTION
+    %pass history and testing set
+    %return error
+    %save validation(error, num clusters)
+    
+    rmsr(numclusters) = (trace((trhistory - testing)' *(trhistory - testing)) / numel(testing)).^(1/2);
+    
+    
+end

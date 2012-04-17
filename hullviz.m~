@@ -1,0 +1,49 @@
+function hullviz(vecmat, coord, clusters)
+
+% clear all
+% close all
+% clc;
+% load newfun
+
+bg = imread('purduemap.png');
+
+% set the range of the axes
+% The image will be stretched to this.
+min_x = 0;
+max_x = 8;
+min_y = 0;
+max_y = 6;
+
+numclusters = size(clusters,1);
+
+%%%Plot things
+
+%%%Plot the GPS locations and clusters
+plot(coord(:,1),coord(:,2),'.')
+hold on
+plot(clusters(:,1),clusters(:,2),'r*')
+title(['GPS location data and ' , num2str(numclusters) , ' clusters'])
+xlabel('lat')
+ylabel('long')
+hold on
+
+%%%Plot the outside of each cluster
+
+k = 1;
+index = ~isnan(vecmat(:,k:k+1));
+vectemp = vecmat(1:sum(sum(index,1))/2,k:k+1);
+
+plot(vectemp(:,k),vectemp(:, k+1),'g')
+hold on
+
+%Already did the first cluster
+for k = 2:numclusters
+    
+    index = ~isnan(vecmat(:,2*k - 1:2*k));
+    vectemp = vecmat(1:sum(sum(index,1))/2,2*k - 1:2*k);
+    
+    plot(vectemp(:,1),vectemp(:,2),'g')
+    hold on
+end
+
+end
