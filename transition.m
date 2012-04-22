@@ -8,7 +8,7 @@
 % clear all
 % close all
 % clc
-% load newfun
+%  newfun
 
 
 function [transprob, fakecdf] = transition(idx, numpoints, users)
@@ -20,6 +20,7 @@ function [transprob, fakecdf] = transition(idx, numpoints, users)
 numclusters = max(idx);
 trans = zeros(numclusters, numclusters);
 
+
 for i = 1:users
     
     for t = 1:numpoints - 2
@@ -27,7 +28,9 @@ for i = 1:users
         c1 = idx(i + (t - 1) * users);
         c2 = idx(i + (t) * users);
         
-        trans(c1, c2) = trans(c1, c2) + 1;
+        if c1 ~= 0 && c2 ~= 0
+            trans(c1, c2) = trans(c1, c2) + 1;
+        end
     end
 end
 

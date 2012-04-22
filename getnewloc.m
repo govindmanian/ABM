@@ -5,6 +5,9 @@
 % nonzero probability gets a piece according to its probility. We generate
 % a random number from U[0,1] and map it to each one of these pieces in the
 % obvious way.
+%
+% If current is 0, then we assign the user to another location randomly
+
 
 
 function current = getnewloc(current, fakecdf)
@@ -13,7 +16,13 @@ newloc = zeros(size(current,1), 1);
 
 for i = 1:size(current,1)
     num = rand(1);
-    indices = find(fakecdf(current(i),:) > num);
+    
+    if current(i) ~= 0
+        indices = find(fakecdf(current(i),:) > num);
+    else
+        indices = randi(length(fakecdf),1);
+    end
+    
     newloc(i) = min(indices);
 end
 

@@ -1,16 +1,16 @@
-% clear all
-% close all
-% clc;
-% load interdata
-% idx = idxfull;
-% coord(:,1) = coordfull(:,2);
-% coord(:,2) = coordfull(:,1);
+clear all
+close all
+clc;
+load interdata
+idx = idxfull;
+coord = coordfull;
 
-function hullviz(idx, coord, clusters)
+% function hullviz(idx, coord, clusters)
 
 numclusters = size(clusters,1);
 
 %Initialize now so you can call it in a conditional statement later
+hullmat = [];
 vecmat = [];
 
 
@@ -25,37 +25,24 @@ for k = 1:numclusters
     points(:,1) = coord(index,1);
     points(:,2) = coord(index,2);
     
-    %%TODO PROBLEMS IF YOU DON'T HAVE THREE UNIQUE <X,Y> IN POINTS, CAN'T
-    %%MAKE A CONVEX HULL
-    
-    m = size(points,1);
-    dontcheck = zeros(size(points,1),1);
-    unique = m;
-    for i = 1:m       
-        if dontcheck(i) == 1
-            continue
-        end
-        
-        [a, ~] = find(points == points(i,1));
-        [b, ~] = find(points == points(i,2));
-        
-        c = intersect(a,b);
-        dontcheck(c) = 1;
-        
-        unique = unique - (length(c) - 1);
-    end
-    
-    if unique < 3
-        vec(size(vecmat,1),2) = NaN;
-        vecmat = [vecmat vec];
-        continue
-    end
-    
+    %     iterative loop naming thing
+    %     eval(['hull' num2str(k) '= convhull(points(:,1), points(:,2));']);
     
     %%Have to do add a bunch of NaN's because you can't append a column of
     %%different size.
     hull = convhull(points(:,1), points(:,2));
     
+    
+    %Creates a giant matrix of hulls. Useful for debugging. Not much else,
+    %probably.
+    %     if k ~= 1 && size(hullmat,1) < size(hull,1)
+    %         hullmat((size(hullmat,1) + 1):size(hull,1), :) = NaN;
+    %         hullmat = [hullmat hull];
+    %     end
+    %     if k ~= 1 && size(hullmat,1) > size(hull,1)
+    %         hulltemp((size(hull,1) + 1):size(hullmat,1), :) = NaN;
+    %         hullmat = [hullmat hulltemp];
+    %     end
     
     %Have to reinitialize because of size problems
     vec = [];
@@ -88,11 +75,10 @@ max_y = 40.438766;
 max_x = -86.905546;
 
 
-
 % disp image
 figure;
 imagesc([min_x max_x], [min_y max_y], flipdim(bg,1));
-hold on
+hold on;
 
 % Plot the GPS locations and clusters
 
@@ -129,4 +115,4 @@ set(gca,'ydir','normal');
 
 %TODO Plot transition probabilities, interaction probabilities, etc
 
-end
+% end

@@ -6,13 +6,16 @@
 % isInfected at index resistor(j)
 
 
-function [isInfected] = spread(current, isInfected, infectprob, time, interprob)
+function [isInfected, infectprob] = spread(current, isInfected, infectprob, time, interprob, mitigate)
 
 interactions(size(current,1),size(current,1)) = 0;
 
 %N.B. no need to check cluster K if K > max(clusters) or K < min(clusters) because no one is
 %above or below
-for k = min(current):max(current)
+
+nonzero = find(current>0);
+
+for k = min(current(nonzero)):max(current)
     
     index = find(current == k);
     
@@ -35,6 +38,17 @@ for k = min(current):max(current)
         end
     end
     
+    %Quarantine by saying that if 10% of the total population is infected
+    %and in a cluster, set all of them to immune and not infected
+    if mitigate == 1
+        if size(infector,1) > size(isInfected) * .1
+            disp('quarantine')
+            infectprob(infector) = 0;
+            isInfected(infector) = 0;
+            continue            
+        end
+    end
+    
     %Use randperm to make sure being at the top of the matrix doesn't
     %mean you get more chances to infect
     
@@ -42,10 +56,9 @@ for k = min(current):max(current)
     infector = infector(randomize);
     
     
+    
     for i = 1:size(infector)
         for j = 1:size(resistor)
-            
-            
             
             %Draw interact from U[0,1]. If it is less than interprob, then the
             %two interact
@@ -60,18 +73,11 @@ for k = min(current):max(current)
                 
                 if p <= infectprob(index(i))
                     
-                    
                     isInfected(resistor(j),1) = 1;
                     isInfected(resistor(j),2) = time;
                     
                     interactions(infector(i), resistor(j)) = 1;
-                    
-                    %Remove resistor if they are infected so you
-                    %don't have double infections
-                    
                     continue
-                    
-                    
                 end
             end
         end

@@ -1,7 +1,7 @@
 % This function makes people immune if their infection has run its course
 % It's very tiny!
 
-function [infectprob ,isInfected] = immunity(time, infectlength, infectprob, isInfected)
+function [infectprob, isInfected] = immunity(time, infectlength, infectprob, isInfected)
 
 for user = 1:size(infectprob,1)
     

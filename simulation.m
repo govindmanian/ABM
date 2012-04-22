@@ -4,13 +4,14 @@
 % Then deterine the squared loss
 % Finally check stopping criterion (convergence)
 
-function [history] = simulation(interprob, fakecdf, begin)
+function [history] = simulation(interprob, fakecdf, begin, mitigate)
 
 
 tic
 
-current = ceil(rand(numusers,1)) + randi(19,numusers,1);
-% current = init;
+numusers = size(begin,1);
+
+current = begin;
 
 % infectprob is called once and instantiates the different infectious
 % levels
@@ -52,7 +53,7 @@ for time = 2:theend
     
     %Find out who is infected
     %N.B. this does not use resistance as of now
-    [isInfected] = spread(current, isInfected, infectprob, time, interprob);    
+    [isInfected, infectprob] = spread(current, isInfected, infectprob, time, interprob, mitigate);    
     
     %Keeps a running log of who is infected at each time
     history(:, time) = isInfected(:,1);
