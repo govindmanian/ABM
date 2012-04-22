@@ -1,4 +1,4 @@
-This is MATLAB code for an Agent Based Model used to simulate an infection.
+This is MATLAB code for an Agent Based Model used to simulate an infection. Start with Process.m
 
 We take GPS location data for u users over t times. Each user may or may not be infected and spreads the infection as a (probabilistic) function of how close they are to someone else.
 
