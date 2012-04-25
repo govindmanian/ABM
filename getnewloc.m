@@ -23,6 +23,12 @@ for i = 1:size(current,1)
         indices = randi(length(fakecdf),1);
     end
     
+    %You get problems if you go to a singleton cluster -- this keeps you
+    %out of there
+    if isempty(indices) == 1
+        indices = randi(length(fakecdf),1);
+    end    
+    
     newloc(i) = min(indices);
 end
 

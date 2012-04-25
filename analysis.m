@@ -18,6 +18,8 @@ function [interprob, fakecdf, begin] =  analysis(coord,numclusters,numusers,nump
 
 tic
 
+numInfected = zeros(numclusters,1);
+
 % This program calls all the other functions for data analysis
 % First take care of creating or cleaning data
 % Then perform k-means clustering
@@ -63,7 +65,7 @@ disp('find transition probabilities')
 
 [~, fakecdf] = transition(idxfull, numpoints, numusers);
 
-save interdata idxfull coordfull numpoints numusers rcrit clusters
+% save interdata idxfull coordfull numpoints numusers rcrit clusters
 
 %Find interaction probabilities
 % function [interprob] = interactions(idx, coord, numpoints, numusers, rcrit)
@@ -78,6 +80,8 @@ begin = idxfull(1:numusers,1);
 %Do the visualization!
 % function hullviz(idx, coord, clusters)
 %%TODO: AXES COULD BE WRONG
+
+save hvdemodata idxfull coordfull clusters
 disp('visualize')
 hullviz(idxfull, coordfull, clusters)
 

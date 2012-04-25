@@ -44,10 +44,19 @@ for k = min(current(nonzero)):max(current)
         if size(infector,1) > size(isInfected) * .1
             disp('quarantine')
             infectprob(infector) = 0;
-            isInfected(infector) = 0;
-            continue            
+            continue
         end
     end
+    
+    %Quarantine BME
+    if mitigate == 2
+        if k == 20
+            disp('quarantine BME')
+            infectprob(infector) = 0;
+            continue
+        end
+    end
+    
     
     %Use randperm to make sure being at the top of the matrix doesn't
     %mean you get more chances to infect
@@ -71,7 +80,7 @@ for k = min(current(nonzero)):max(current)
                 %infectprob then you get spread
                 p = rand(1);
                 
-                if p <= infectprob(index(i))
+                if p <= infectprob(infector(i))
                     
                     isInfected(resistor(j),1) = 1;
                     isInfected(resistor(j),2) = time;

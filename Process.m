@@ -17,13 +17,21 @@ load timepointlocations
 
 %Start at 4467 -- have 50 users from here one out
 %Truncate old data
-userids = [1:49 69]';
+userids = [1:46]';
 past = timePntLocs(userids,:,4467:end);
 wasInfected = infctStatus(userids,:,4467:end);
 
 %They're massive, get rid of em
 clear timePntLocs
 clear infctStatus
+
+% load timepointlocationste
+% userids = find(timePntLocs(:,1,560) ~= 0);
+% wasInfected = infctTime(userids,:,560:end);
+
+%They're massive, get rid of em
+% clear timePntLocs
+% clear infctTime
 
 %Set spread radius
 %%% TODO: Have a way of converting meters to GPS
@@ -33,11 +41,14 @@ rcrit = 0.0001;
 
 numusers = size(past,1);
 
+%If 0, no strat. If 1, high concentration. If 2, BME.
 mitigate = 0;
 
+%Naive Bayes
+numfeatures = 5;
 
-guess = 20;
-uncertainty = 5;
+guess = 45;
+uncertainty = 0;
 minimum = guess - uncertainty;
 maximum = guess + uncertainty;
 
@@ -80,7 +91,7 @@ for numclusters = minimum:maximum
     %from start locations
     %return history -- num infections over time
     
-    %     mitigate = 1; %Quarantine
+    %mitigate = 1; %Quarantine
     [history] = simulation(interprob, fakecdf, begin, mitigate);
     
     
@@ -104,7 +115,7 @@ for numclusters = minimum:maximum
     
     if rmsr(numclusters) < min(rmsr)
         optClusters = numclusters;
-        save simdata interprob fakecdf begin
+        save simdata interprob fakecdf begin rmsr
     end
-    
+        
 end
